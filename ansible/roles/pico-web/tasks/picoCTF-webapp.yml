@@ -54,7 +54,7 @@
     backup: yes
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
-  no_log: True
+  #no_log: True
 
 - name: Template deployment settings for replica-reading ctf-stats
   template:
@@ -63,7 +63,7 @@
     backup: yes
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
-  no_log: True
+  #no_log: True
   when: mongodb_replica_enabled | bool
 
 - name: Copy mongodb public cert if TLS enabled
