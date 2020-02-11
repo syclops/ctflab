@@ -1,30 +1,14 @@
-# Terraform configuration to deploy picoCTF to AWS (production)
+# Terraform configuration to deploy picoCTF to Digital Ocean (production)
+# Author: Steve Matsumoto <stephanos.matsumoto@sporic.me>
 
-###
-# This configuration instantiates a single tier infrastructure for running the
-# picoCTF platform on AWS. Once deployed this infrastructure can be
-# provisioned, configured, and administered with ansible.
-###
+variable do_token {}
 
-# These are the only variables you must explicitly configure as they determine
-# where AWS will launch your resources
 variable "region" {
-  # Choose best for where your CTF is
-  default = "us-east-1"
+  default = "nyc3"
 }
 
-variable "availability_zone" {
-  # Determine using the AWS CLI or Dashboard
-  default = "us-east-1b"
-}
-
-# AWS Specific config (single region)
-# Configured to get access_key and secret_key from  environment variables
-# For additional methods: https://www.terraform.io/docs/providers/aws/
-provider "aws" {
-  region = var.region
-  #access_key = var.access_key
-  #secret_key = var.secret_key
+provider "digitalocean" {
+  token = var.do_token
 }
 
 ###
@@ -34,38 +18,84 @@ provider "aws" {
 # See the testing environment for an example of variables being overloaded.
 ###
 
-# Create single tier infrastructure with environmental configuration
-module "single_tier_aws" {
-  source = "../modules/single_tier_aws"
+resource "digitalocean_ssh_key" "default" {
+  name = "CTFLab Production Key"
+  public_key = file("~/.ssh/ctflab_production_ecdsa.pub")
+}
 
-  ## AWS Configuration
-  #user = "admin"                                 # Default username for Debian AMIs
-  region            = var.region            # configured above
-  availability_zone = var.availability_zone # configured above
-  ## SSH
-  #key_name = "pico_production"
-  #public_key_path = "~/.ssh/picoCTF_production_rsa.pub"     # Ensure this is created
+resource "digitalocean_droplet" "web" {
+  image = "ubuntu-18-04-x64"
+  ipv6 = true
+  name = "ctflab-web"
+  private_networking = true
+  region = var.region
+  size = "s-1vcpu-1gb"
+  ssh_keys = [digitalocean_ssh_key.default.fingerprint]
+}
 
-  ## Network
-  #vpc_cidr = "10.0.0.0/16"
-  #public_subnet_cidr = "10.0.1.0/24"
-  #web_private_ip = "10.0.1.10"           # Update ansible config if changed
-  #shell_private_ip = "10.0.1.11"         # Update ansible config if changed
+resource "digitalocean_domain" "web" {
+  name = "ctf.practicalsecurity.cc"
+}
 
-  ## Instances
-  #web_instance_type = "t2.micro"         # For a live competition consider upgrading
-  #shell_instance_type = "t2.micro"       # For a live competition consider upgrading
+resource "digitalocean_record" "web_a" {
+  domain = digitalocean_domain.web.name
+  name = "@"
+  type = "A"
+  value = digitalocean_droplet.web.ipv4_address
+}
 
-  ## EBS Volumes
-  #db_ebs_data_size = "10"                # Size accordingly
-  #db_ebs_data_device_name = "/dev/xvdf"  # update ansible config if changed
+resource "digitalocean_record" "web_aaaa" {
+  domain = digitalocean_domain.web.name
+  name = "@"
+  type = "AAAA"
+  value = digitalocean_droplet.web.ipv6_address
+}
 
-  ## Tags                                 # These tags are for convenience
-  #competition_tag = "picoCTF"            # update according to your needs
-  #env_tag = "production"
-  #web_name  = "picoCTF-web"
-  #shell_name = "picoCTF-shell"
-  #db_ebs_name = "picoCTF-db-ebs"
+resource "digitalocean_record" "web_caa_letsencrypt" {
+  domain = digitalocean_domain.web.name
+  flags = "0"
+  name = "@"
+  tag = "issue"
+  type = "CAA"
+  value = "letsencrypt.org."
+}
+
+resource "digitalocean_droplet" "shell" {
+  image = "ubuntu-18-04-x64"
+  ipv6 = true
+  name = "ctflab-shell"
+  private_networking = true
+  region = var.region
+  size = "s-1vcpu-1gb"
+  ssh_keys = [digitalocean_ssh_key.default.fingerprint]
+}
+
+resource "digitalocean_domain" "shell" {
+  name = "shell.ctf.practicalsecurity.cc"
+  ip_address = digitalocean_droplet.shell.ipv4_address
+}
+
+resource "digitalocean_record" "shell_a" {
+  domain = digitalocean_domain.shell.name
+  name = "@"
+  type = "A"
+  value = digitalocean_droplet.shell.ipv4_address
+}
+
+resource "digitalocean_record" "shell_aaaa" {
+  domain = digitalocean_domain.shell.name
+  name = "@"
+  type = "AAAA"
+  value = digitalocean_droplet.shell.ipv6_address
+}
+
+resource "digitalocean_record" "shell_caa_letsencrypt" {
+  domain = digitalocean_domain.shell.name
+  flags = "0"
+  name = "@"
+  tag = "issue"
+  type = "CAA"
+  value = "letsencrypt.org."
 }
 
 ###
@@ -73,11 +103,19 @@ module "single_tier_aws" {
 # Return the following to the user for configuring the ansible inventory
 ###
 
-output "Web_Elastic_IP_address" {
-  value = module.single_tier_aws.web_eip
+output "web_ipv4" {
+  value = digitalocean_droplet.web.ipv4_address
 }
 
-output "Shell_Elastic_IP_address" {
-  value = module.single_tier_aws.shell_eip
+output "web_ipv4_private" {
+  value = digitalocean_droplet.web.ipv4_address_private
+}
+
+output "shell_ipv4" {
+  value = digitalocean_droplet.shell.ipv4_address
+}
+
+output "shell_ipv4_private" {
+  value = digitalocean_droplet.shell.ipv4_address_private
 }
 

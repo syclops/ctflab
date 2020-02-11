@@ -45,7 +45,7 @@ def grade_problem(pid, key, tid=None):
     assigned_instance = api.problem.get_instance_data(pid, tid)
 
     suspicious = False
-    correct = assigned_instance["flag"] in key
+    correct = (key == f'flag{{{assigned_instance["flag"]}}}')
     if not correct and DEBUG_KEY is not None:
         correct = DEBUG_KEY in key
     if not correct:

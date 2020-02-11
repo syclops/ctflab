@@ -437,7 +437,7 @@ const ProblemSubmit = React.createClass({
               buttonBefore={submitButton}
               type="text"
               value={this.state.value}
-              placeholder="picoCTF{FLAG}"
+              placeholder="flag{...}"
               onChange={this.handleChange}
             >
               <span className="input-group-btn">
