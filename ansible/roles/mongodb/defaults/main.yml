@@ -4,7 +4,7 @@
 # Largely these should be sensible defaults and show not require changing.
 
 db_name: picoCTF
-db_data_path: "/data"
+db_data_path: "/mnt/ctflab_data"
 
 # MongoDB User Variables (used in configure_auth.yml task)
 # Passwords should be stored outside version control or in an
@@ -50,9 +50,9 @@ redis_daemon_name: redis-server
 # AWS specific mount points (defined in Terraform - static)
 ##
 on_aws: False
-db_data_device: "/dev/xvdf"
+db_data_device: "/dev/disk/by-id/scsi-0DO_Volume_ctflab-data"
 # For nvme EBS, use db_data_device: "/dev/nvme0n1p1"
 db_data_device_fstype: "ext4"
 # db_data_mount_opts: "defaults,auto,noatime,noexec 0 0"
-db_data_mount_opts: "defaults,auto,noatime,noexec"
+db_data_mount_opts: "defaults,discard 0 0"
 
