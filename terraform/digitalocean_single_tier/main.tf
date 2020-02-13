@@ -1,4 +1,4 @@
-# Terraform configuration to deploy picoCTF to Digital Ocean (production)
+# Terraform configuration to deploy picoCTF to Digital Ocean
 # Author: Steve Matsumoto <stephanos.matsumoto@sporic.me>
 
 variable do_token {}
@@ -60,6 +60,18 @@ resource "digitalocean_record" "web_caa_letsencrypt" {
   value = "letsencrypt.org."
 }
 
+resource "digitalocean_volume" "web_data" {
+  initial_filesystem_type = "ext4"
+  name = "ctflab-data"
+  region = var.region
+  size = 10
+}
+
+resource "digitalocean_volume_attachment" "web_data_attach" {
+  droplet_id = digitalocean_droplet.web.id
+  volume_id = digitalocean_volume.web_data.id
+}
+
 resource "digitalocean_droplet" "shell" {
   image = "ubuntu-18-04-x64"
   ipv6 = true
@@ -117,5 +129,17 @@ output "shell_ipv4" {
 
 output "shell_ipv4_private" {
   value = digitalocean_droplet.shell.ipv4_address_private
+}
+
+output "db_id" {
+  value = digitalocean_volume.web_data.id
+}
+
+output "db_urn" {
+  value = digitalocean_volume.web_data.urn
+}
+
+output "db_filesystem_label" {
+  value = digitalocean_volume.web_data.filesystem_label
 }
 
