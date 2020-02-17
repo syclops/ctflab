@@ -27,7 +27,7 @@ PubkeyAuthentication yes
 AuthorizedKeysCommand /lib/security/sshkey_auth.py
 AuthorizedKeysCommandUser root
 
-AuthorizedKeysFile /nada
+#AuthorizedKeysFile /nada
 
 # Don't read the user's ~/.rhosts and ~/.shosts files
 IgnoreRhosts yes
