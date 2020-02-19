@@ -1,0 +1,10 @@
+{
+  "name": "All your base64 are belong to us",
+  "category": "Data Encoding",
+  "description": "I just don't get what this guy is saying. {{url_for(\"allyourbase64.png\", display=\"Do you\")}}?",
+  "score": 5,
+  "hints": [],
+  "author": "Steve Matsumoto",
+  "organization": "Olin College of Engineering",
+  "event": "FunSec SP20"
+}
