@@ -1,7 +1,7 @@
 {
   "name": "Master Hacker",
   "category": "Web Exploits",
-  "pkg_dependencies": ["php5-sqlite"],
+  "pkg_dependencies": ["php-sqlite3"],
   "description": "Click-clack. I'm hacking into the mainframe at http://:.",
   "score" : 10,
   "hints": [],
