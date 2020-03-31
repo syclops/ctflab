@@ -1,0 +1,11 @@
+{
+  "name": "Master Hacker",
+  "category": "Web Exploits",
+  "pkg_dependencies": ["php5-sqlite"],
+  "description": "Click-clack. I'm hacking into the mainframe at http://:.",
+  "score" : 10,
+  "hints": [],
+  "author": "Steve Matsumoto",
+  "organization": "Olin College of Engineering",
+  "event": "FunSec SP20"
+}
