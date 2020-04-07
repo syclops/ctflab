@@ -1,9 +1,9 @@
 {
-  "name": "Master Hacker",
+  "name": "Smelting OR",
   "category": "Web Exploits",
   "pkg_dependencies": ["php-sqlite3"],
-  "description": "Click-clack. I'm hacking into the mainframe at https://{{server}}/problem/{{port}}/.",
-  "score" : 10,
+  "description": "Hack the refinery at https://{{server}}/problem/{{port}}/! Ore is allowed but OR is not.",
+  "score" : 30,
   "hints": [],
   "author": "Steve Matsumoto",
   "organization": "Olin College of Engineering",

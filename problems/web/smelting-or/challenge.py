@@ -6,7 +6,7 @@ class Problem(PHPApp):
     php_root = "webroot/"
 
     def generate_flag(self, _):
-        return "ok_im_in"
+        return "refined_hacking"
 
     def setup(self):
       conn = sqlite3.connect('users.db')
