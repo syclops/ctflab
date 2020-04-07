@@ -1,0 +1,11 @@
+{
+  "name": "Director Y",
+  "category": "Web Exploits",
+  "pkg_dependencies": ["php-sqlite3"],
+  "description": "Director Yannick Rotcerid is hiding something, and we need you to find out what it is. Log on at https://{{server}}/problem/{{port}}/. By the way, we tried SQL injection on that login form, and nothing seems to work.",
+  "score" : 60,
+  "hints": [],
+  "author": "Steve Matsumoto",
+  "organization": "Olin College of Engineering",
+  "event": "FunSec SP20"
+}
