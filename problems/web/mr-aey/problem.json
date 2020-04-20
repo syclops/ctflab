@@ -1,0 +1,10 @@
+{
+  "name": "Mr. Aey",
+  "category": "Web Exploits",
+  "description": "Mr. Aey has been accessing suspicious sites, but seems to have forgotten to use TLS. Some of his Web traffic we logged is in {{url for(\"curling.pcap\", display=\"curling.pcap\")}}. The flag is the value of HTTP parameter v.",
+  "score" : 10,
+  "hints": [],
+  "author": "Steve Matsumoto",
+  "organization": "Olin College of Engineering",
+  "event": "FunSec SP20"
+}
