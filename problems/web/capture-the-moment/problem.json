@@ -1,0 +1,10 @@
+{
+  "name": "Capture the Moment",
+  "category": "Web Exploits",
+  "description": "Alright, who's been downloading weird images on the company network? Data here: {{url_for(\"image.pcap\", display=\"image.pcap\")}}.",
+  "score" : 30,
+  "hints": [],
+  "author": "Steve Matsumoto",
+  "organization": "Olin College of Engineering",
+  "event": "FunSec SP20"
+}
