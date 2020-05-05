@@ -1,0 +1,10 @@
+{
+  "name": "Bitwise Least Set Bit Mask",
+  "category": "Data Encoding",
+  "description": "Based on the Data Lab in the CMU course 15-213. SSH into the shell server and follow the instructions in {{directory}}.",
+  "score": 25,
+  "hints": [],
+  "author": "Steve Matsumoto",
+  "organization": "Olin College of Engineering",
+  "event": "FunSec SP20"
+}

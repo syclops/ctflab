@@ -1,0 +1,2 @@
+In Copy LSB, x << 31 >> 31 works, even though the behavior of this should be
+undefined.
