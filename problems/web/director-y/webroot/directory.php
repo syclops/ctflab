@@ -2,16 +2,33 @@
   include "config.php";
   $con = new SQLite3($database_file);
 
-  $id = $_POST["id"];
+  $id = $_POST["idnum"];
   $query = "SELECT id, name FROM users WHERE id='$id'";
   $result = $con->query($query);
 
-  $row = $result->fetchArray();
+  echo "<h1>Directory search results</h1>";
 
-  echo "<h1>Search results</h1>";
-  echo "<pre>";
-  foreach ($row as $item) {
-    echo $item;
+  echo "<style>
+    table, th, td {
+      border: 1px solid black;
+    }
+    th, td {
+      padding: 15px;
+    }
+  </style>
+  ";
+
+  echo "<table>";
+  echo "<tr>";
+  echo "<th><b>ID number</b></th>";
+  echo "<th><b>Username</b></th>";
+  echo "</tr>";
+  while ($row = $result->fetchArray()) {
+    echo "<tr>";
+    echo "<th>" . $row[0] . "</th>";
+    echo "<th>" . $row[1] . "</th>";
+    echo "</tr>";
   }
-  echo "</pre>";
+  echo "</table>";
+
 ?>

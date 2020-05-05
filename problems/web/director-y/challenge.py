@@ -8,7 +8,8 @@ PLAINTEXT_DB = "db.txt"
 
 
 class Problem(PHPApp):
-    files = files_from_directory(WEB_ROOT) + [ProtectedFile(DB_FILE)]
+    files = files_from_directory(WEB_ROOT) + [ProtectedFile(DB_FILE),
+                                              ProtectedFile(PLAINTEXT_DB)]
     php_root = WEB_ROOT
 
     def generate_flag(self, _):
@@ -20,8 +21,7 @@ class Problem(PHPApp):
         c.execute("CREATE TABLE users (id INTEGER, name TEXT, password TEXT);")
         for line in fileinput.input(PLAINTEXT_DB):
             id_num, user, passwd = line.strip().split(',')
-            c.execute(
-                f"INSERT INTO users VALUES ({id_num}, '{user}', '{passwd}')"
-            )
+            c.execute("INSERT INTO users VALUES (?, ?, ?)", (id_num, user,
+                                                             passwd))
         conn.commit()
         conn.close()
